@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="authoring-tool" content="Adobe_Animate_CC">
+        <title>karti_21</title>
+        <style>
+            #_preload_div_,#animation_container {
+                position: absolute;
+                margin: auto;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0
+            }
+        </style>
+        <script src="libs/1.0.0/createjs.min.js"></script>
+        <script src="karti_21.js"></script>
+        <script>
+            function init() {
+                canvas = document.getElementById("canvas"),
+                anim_container = document.getElementById("animation_container"),
+                dom_overlay_container = document.getElementById("dom_overlay_container");
+                var e = AdobeAn.getComposition("5B616F60D7FF42418C9E4545367363D2")
+                  , t = e.getLibrary()
+                  , a = new createjs.LoadQueue(!1);
+                a.addEventListener("fileload", function(t) {
+                    handleFileLoad(t, e)
+                }),
+                a.addEventListener("complete", function(t) {
+                    handleComplete(t, e)
+                });
+                var t = e.getLibrary();
+                a.loadManifest(t.properties.manifest)
+            }
+            function handleFileLoad(e, t) {
+                var a = t.getImages();
+                e && "image" == e.item.type && (a[e.item.id] = e.result)
+            }
+            function handleComplete(e, t) {
+                var a = t.getLibrary()
+                  , n = t.getSpriteSheet()
+                  , o = e.target
+                  , r = a.ssMetadata;
+                for (i = 0; i < r.length; i++)
+                    n[r[i].name] = new createjs.SpriteSheet({
+                        images: [o.getResult(r[i].name)],
+                        frames: r[i].frames
+                    });
+                var d = document.getElementById("_preload_div_");
+                d.style.display = "none",
+                canvas.style.display = "block",
+                exportRoot = new a.karti_21,
+                stage = new a.Stage(canvas),
+                fnStartAnimation = function() {
+                    stage.addChild(exportRoot),
+                    createjs.Ticker.framerate = a.properties.fps,
+                    createjs.Ticker.addEventListener("tick", stage)
+                }
+                ,
+                AdobeAn.makeResponsive(!0, "both", !0, 1, [canvas, d, anim_container, dom_overlay_container]),
+                AdobeAn.compositionLoaded(a.properties.id),
+                fnStartAnimation()
+            }
+            var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+        </script>
+    </head>
+    <body onload="init()" style="margin:0">
+        <div id="animation_container" style="background-color:rgba(255,255,255,0);width:1372px;height:632px">
+            <canvas id="canvas" width="1372" height="632" style="position:absolute;display:none;background-color:rgba(255,255,255,0)"></canvas>
+            <div id="dom_overlay_container" style="pointer-events:none;overflow:hidden;width:1372px;height:632px;position:absolute;left:0;top:0;display:none"></div>
+        </div>
+        <div id="_preload_div_" style="position:absolute;top:0;left:0;display:inline-block;height:632px;width:1372px;text-align:center">
+            <span style="display:inline-block;height:100%;vertical-align:middle"></span>
+            <img src="preloader/_preloader.gif" style="vertical-align:middle;max-height:100%">
+        </div>
+    </body>
+</html>
